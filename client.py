@@ -17,10 +17,11 @@ readable,writable,exceptional = select.select(inputs,outputs,inputs,timeout)
 host='localhost'
 port = 8888
 
-s.settimeout(1)
 seq = 0
+for i in readable:
+	i.recvfrom(1024)
 
-
+'''
 for i in range(10):
 	msg= 'Message #'+str(i)
 	checksum = ip_checksum(msg)
@@ -37,4 +38,4 @@ for i in range(10):
 
 	except timeout:
 		print 'Timeout'
-
+'''

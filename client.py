@@ -4,14 +4,22 @@ import sys
 import time
 from check import ip_checksum
 import random
+import select
+import Queue
 
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+inputs = [s]
+outputs= []
+timeout = 1
+
+readable,writable,exceptional = select.select(inputs,outputs,inputs,timeout)
 
 host='localhost'
 port = 8888
 
 s.settimeout(1)
 seq = 0
+
 
 for i in range(10):
 	msg= 'Message #'+str(i)
@@ -29,3 +37,4 @@ for i in range(10):
 
 	except timeout:
 		print 'Timeout'
+

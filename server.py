@@ -22,7 +22,7 @@ while 1:
 	msg=data[2:12]
 	checksum=data[12:]
 	checksum2=ip_checksum(msg)
-	print seq, '-', msg, ' ,checkusm= ', checksum,' from ',addr
+	print seq, '-', msg, ' ,checkusm = ', checksum,' from ',addr
 	
 	if not d:
 		break

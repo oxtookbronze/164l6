@@ -18,6 +18,12 @@ host='localhost'
 port = 8888
 
 seq = 0
+numPackets = 10
+windowSize = 3
+
+s.recvfrom(1024)
+
+
 for i in readable:
 	i.recvfrom(1024)
 

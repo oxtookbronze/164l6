@@ -12,7 +12,7 @@ inputs = [s]
 outputs= []
 timeout = 1
 
-readable,writable,exceptional = select.select(inputs,outputs,inputs,timeout)
+readable,writable,exceptional = select.select(inputs,outputs,[],timeout)
 
 host='localhost'
 port = 8888
@@ -20,12 +20,31 @@ port = 8888
 seq = 0
 numPackets = 10
 windowSize = 3
+windowList = []
+msgList = []
 
-s.recvfrom(1024)
+for i in range(numPackets):
+	msgList.append('Message #' + str(i))
+#fill the queue initially before the algorithm can take over
+print msgList
+for i in range(min(numPackets,windowSize)):
+	windowList.append(msgList.pop(0))
+print windowList
+
+while len(msgList) != 0 or len(windowList) != 0:
+	
+	for i in range(min(numPackets,windowSize - len(windowList))):
+		windowList.insert(0,msgList.pop(0))
+	for i in range(len(windowList)):
+		time.sleep(1)
+		checksum = ip_checksum(windowList[i])
+		msg = str(i) + ' ' + windowList[i]+ ' ' + checksum
+		print msg
+		s.sendto(msg,(host,port))
+		s.recvfrom(1024)	
 
 
-for i in readable:
-	i.recvfrom(1024)
+
 
 '''
 for i in range(10):

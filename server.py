@@ -4,12 +4,14 @@ import time
 from check import ip_checksum
 import random
 
-HOST = ''
+HOST = 'localhost'
 PORT = 8888
 
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 s.bind((HOST,PORT))
+
+windowSize = 3
 
 print "Created Socket and bind"
 
@@ -26,11 +28,8 @@ while 1:
 	
 	if not d:
 		break
-	delay=random.random()*2
-	time.sleep(delay)
 
-	if str(expecting)==str(seq) and str(checksum)==str(checksum2):
 		s.sendto('ACK for '+d[0], d[1])
-		expecting= 1 - expecting
-
+	
+	expecting = (expecting +1) % windowSize
 s.close()
